@@ -1,11 +1,12 @@
 # message proxy
 
 ```bash
-POST https://sms-proxy.ejwan.dev/messages HTTP/1.1
-Content-Type: application/json
-{
+curl --request POST \
+  --url https://sms-proxy.ejwan.dev/messages \
+  --header 'Content-Type: application/json' \
+  --data '{
   "message": "fake message"
-}
+}'
 ```
 
 
