@@ -4,29 +4,19 @@ const wss = require('express-ws')(app);
 
 app.use(express.json());
 
-const gracefulShutdown = () => {
-    // redis teardown
-};
+app.post('/:id', (req, res) => {
+    const wssClients = wss.getWss().clients;
+    console.log(`Found ${wssClients.size} clients`);
+    
+    [...wssClients]
+        .filter(client => client.id == req.params.id)
+        .forEach((client) => client.send(req.body.message));
 
-app.get('/:number', (req, res) => res.send(req.params.number));
-
-app.post('/:number', (req, res) => {
-    console.log(`Found ${wss.getWss().clients.size} clients`);
-    wss.getWss().clients.forEach((client) => client.send(req.params.number));
-    res.send(req.params.number);
+    res.json();
 });
 
-app.delete('/:number', (req, res) => res.send(req.params.number));
-
-app.ws('/', (ws, req) => {
-    ws.on('message', function (msg) {
-        console.log('message', msg);
-    });
-    console.log('socket', 'socket');
+app.ws('/ws/:id', (ws, req) => {
+    ws.id = req.params.id;
 });
 
 app.listen(3000, () => console.log('Listening on port 3000'));
-
-process.on('SIGINT', gracefulShutdown);
-process.on('SIGTERM', gracefulShutdown);
-process.on('SIGUSR2', gracefulShutdown); // Sent by nodemon
