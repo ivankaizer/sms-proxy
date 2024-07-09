@@ -12,5 +12,5 @@ curl --request POST \
 
 ```js
 const ws = new WebSocket('wss://sms-proxy.ejwan.dev/ws/messages'); 
-ws.onmessage = message => console.log;
+ws.onmessage = console.log;
 ```
