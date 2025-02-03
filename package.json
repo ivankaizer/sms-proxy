@@ -1,11 +1,10 @@
 {
-  "name": "message-proxy",
+  "name": "ws-bridge",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
     "prettify": "prettier -l --write \"**/*.js\"",
-    "test": "jest",
     "dev": "nodemon --inspect=0.0.0.0:9229 -L index.js"
   },
   "prettier": {
@@ -21,6 +20,7 @@
   },
   "dependencies": {
     "express": "^4.19.2",
+    "express-rate-limit": "^7.5.0",
     "express-ws": "^5.0.2"
   }
 }

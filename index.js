@@ -1,15 +1,21 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
+
 const app = express();
 const wss = require('express-ws')(app);
+const limiter = rateLimit({
+    windowMs: 60 * 1000, // 60s
+    limit: 10,
+    standardHeaders: true,
+    message: { error: 'Too many requests, please try again later.' },
+});
 
 app.use(express.json());
+app.disable('x-powered-by');
 
-app.post('/:id', (req, res) => {
-    const wssClients = wss.getWss().clients;
-    console.log(`Found ${wssClients.size} clients`);
-    
-    [...wssClients]
-        .filter(client => client.id == req.params.id)
+app.post('/:id', limiter, (req, res) => {
+    [...wss.getWss().clients]
+        .filter((client) => client.id == req.params.id)
         .forEach((client) => client.send(req.body.message));
 
     res.json();

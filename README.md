@@ -1,16 +1,14 @@
-# message proxy
+# websocket bridge
 
 ```bash
 curl --request POST \
-  --url https://sms-proxy.ejwan.dev/messages \
+  --url https://ws.ejwan.dev/channel-123 \
   --header 'Content-Type: application/json' \
-  --data '{
-  "message": "fake message"
-}'
+  --data '{"message": "some message"}'
 ```
 
 
 ```js
-const ws = new WebSocket('wss://sms-proxy.ejwan.dev/ws/messages'); 
+const ws = new WebSocket('wss://ws.ejwan.dev/ws/channel-123'); 
 ws.onmessage = console.log;
 ```
