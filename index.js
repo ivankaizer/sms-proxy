@@ -42,12 +42,16 @@ app.post('/:id', limiter, async (req, res) => {
 
     client.send(req.body.message);
 
-    const response = new Promise(function (resolve, reject) {
+    const response = await new Promise(function (resolve, reject) {
         client.onmessage = (message) => resolve(message.data);
         client.onerror = (error) => reject(error);
     });
 
-    res.json(await response);
+    try {
+        res.json(JSON.parse(String(response)));
+    } catch (e) {
+        res.json(response);
+    }
 });
 
 app.ws('/ws/:id', (ws, req) => {
@@ -56,4 +60,5 @@ app.ws('/ws/:id', (ws, req) => {
 
 app.use(errorHandler);
 
-app.listen(3000, () => console.log('Listening on port 3000'));
+const port = 3001;
+app.listen(port, () => console.log(`Listening on port ${port}`));
