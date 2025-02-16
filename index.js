@@ -60,5 +60,5 @@ app.ws('/ws/:id', (ws, req) => {
 
 app.use(errorHandler);
 
-const port = 3001;
+const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}`));
